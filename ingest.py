@@ -146,5 +146,34 @@ class EnhanceDocumentIngestor:
             logger.error(f"Error splitting documents: {e}")
             return []
         
+    def create_vector_store(self, documents: List[Document]) -> Optional[FAISS]:
+        #create a vector store from the documents and return it
+        try:
+            if not chunks:
+                logger.error("No chunks to create vector store ")
+                return None 
+            logger.info(f"Creating FAISS vector store from {len(chunks)} chunks ")
+
+            #create the vector store in batches to handle large datasets and memory efficiency
+            batch_size = 100
+            vector_store = None
+
+            for i in range(0, len(chunks), batch_size):
+                batch = chunks[i:i + batch_size]
+                logger.info(f"Processing batch {i// batch_size + 1}/{(len(chunks) + batch_size -1)// batch_size}")
+
+
+                if vector_store is None:
+                    #initialize the vector store with the first batch
+                    vector_store = FAISS.from_documents(batch, self.embeddings)
+                else:
+                    #add the batch to the existing vector store
+                    batch_store = FAISS.from_documents(batch, self.embeddings)
+                    vector_store.merge_from(batch_store)
+            logger.info("Vector store created successfully.")
+            return vector_store 
+        except Exception as e:
+            logger.error(f"Error creating vector store: {e}")
+            return None
         
-                    
+    
