@@ -61,18 +61,90 @@ class EnhanceDocumentIngestor:
     else:
         return ValueError(f"unsupported file type : {extension}")
     
-    
-
-#create vector database 
-def create_vector_database():
-    try:
-        #check if data directory exists
-        if not os.path.exists(DATA_DIR):
-            logger.error(f"Data directory '{DATA_DIR}' does not exist.")
-            return False 
+    def load_documents(self, file_paths: List[str] = None) -> Tuple[List[Document], List[str]]:
+        #load documents from the specified file paths or data directory and returns tupleof(loaded_documents, failed_diles)
+        loaded_docs = []
+        failed_files = []
         
-        #check if any pdf files exist in the data directory
-        pdf_files = [f for f in os.listdir(DATA_DIR)if f.edndswith('.pdf')]
-        if not pdf_files:
-            logger.error("no pdf files found in the data directory.")
-            return False 
+        try:
+            if file_paths is None:
+                #load all files from the data directory
+                files_paths = []
+                for ext in self.config.supported_extensions:
+                    files_paths.extend(Path(self.config.data_path).glob(f'*[ext]'))
+                
+                file_paths = [str(p) for p in files_paths if p.is_file()]
+
+                if not file_paths:
+                    logger.warning("No files found to process.")
+                    return [], []
+                logger.info(f"loadin {len(file_pahts)} files from {self.config.data_path}   directory.")
+
+                for file_path in file_paths:
+                    try:
+                        file_path = Path(file_path)
+                        
+                        #check the size of the file 
+                        file_size_mb = file_path.stat().st_size / (1024 * 1024)  # Convert bytes to MB
+                        if file_size_mb > self.config.max_file_size_mb:
+                            logger.warning(f"skkiping large file :{file_path.name} ({file_size_mb: 2f}MB)")
+                            failed_files.append(str(file_path))
+                            continue
+                        #load the document using the appropriate loader
+                        loader = self._get_loader_for_file(file_path)
+                        docs = loader.load()
+
+                        #adding metadata to the documents
+                        for doc in docs:
+                            doc.metadata.update({
+                                'source_file': str(file_path),,
+                                'file_name' : file_path.name,
+                                'file_size_mb': file_size_mb,
+                                'loaded_at': datatime.now().isoformat()
+                            })
+
+                        loaded_docs.extend(docs)
+                        logger.info(f"Loaded {file_path.name} ({len(docs)} pages).)")
+
+                    except Exception as e:
+                        logger.error(f"Error loading file {file_path}: {e} ")
+                        failed_fiels.append(str(file_path))
+                    
+                    logger.info(f"Successfully loaded {len(loaded_docs)} documents from {len(file_paths)}")
+                    return loaded_docs, failed_files
+        except Exception as e:
+            logger.error(f"Error loading documents: {e}")
+            return [], file_paths or []
+        
+    def split_documents(self, documents: List[Document]) -> List[Document]:
+        #split the documents into smaller chinks with progress tracking 
+        try:
+            if not documents:
+                logger.warning("No documents to split")
+                return []
+            logger.info(f"Splitting {le(documents)} documents into chunks.....")
+
+            #split documents 
+            chunks = self.text_splitter.split_documents(documents)
+
+            #apply chunk limit if specified 
+            if self.config.max_chunks is not None:
+                original_count = len(chunks)
+                chunks = chunks[:self.config.max_chunks]
+                logger.info(f"Applied chunk limit:{original_count}-> {len(chunks)} chunks")
+
+            #adding metadata on chunks 
+            for i, chunk in enumerate(chunks):
+                chunk.metadata.update({
+                    'chunk_id':i,
+                    'chunk_size': len(chunk.page_count)
+                    'toatl_chunks': len(chunks)
+                })   
+            logger.info(f"Created {len(chunks)} text chunks ")
+            return chunks 
+        except Exception as e:
+            logger.error(f"Error splitting documents: {e}")
+            return []
+        
+        
+                    
