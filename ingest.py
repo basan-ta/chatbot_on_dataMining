@@ -176,4 +176,23 @@ class EnhanceDocumentIngestor:
             logger.error(f"Error creating vector store: {e}")
             return None
         
+    def save_vector_store(self, vector_store: FAISS) -> bool:
+        #save vector store to the specified directory
+        try:
+            if vector_store is None:
+                logger.error("No vector store to save.")
+                return False 
+            
+            #create the director if it doesn't exist 
+            Path(self.config.db_faiss_path).parent.mkdir(parents=True, exist_ok = True)
+
+            #save the vector store 
+            vector_store.save_local(self.congif.db_faiss_path)
+
+            logger.info(f"Vector store saved to {self.config.db_faiss_path}")
+            return True 
+        except Exception as e:
+            logger.error(f"Error saving vector store: {e}")
+            return False
+        
     

@@ -11,6 +11,13 @@ A Retrieval-Augmented Generation (RAG) system that allows users to interact with
 - Conversational Interface: Clean chat based UI powered by Chainlit
 - Document Retrieval: Find relevant document sections based on user queries
 - AI-Powered Responses: Generate contextual answers using retrieved information
+## How it works ??
+- User asks a question → "What is machine learning?"
+- Question gets embedded → Converted to vector
+- FAISS searches → Finds 3 most similar document chunks
+- Context + Question → Sent to Llama2 with custom prompt
+- LLM generates answer → Based only on retrieved context
+-    Response sent → Answer + source documents shown to user
 
 ## Tech Stack
 
