@@ -1,8 +1,8 @@
 # chatbot_on_dataMining
 
-# RAG System - Document-Based AI Assistant
+# RAG System - Document Based AI Assistant
 
-A Retrieval-Augmented Generation (RAG) system that allows users to interact with PDF documents through a conversational interface. The system processes PDF documents, creates embeddings, and enables natural language queries against the document content.
+A Retrieval Augmented Generation (RAG) system that allows users to interact with PDF documents through a conversational interface. The system processes PDF documents, creates embeddings, and enables natural language queries against the document content.
 
 ## Features
 
