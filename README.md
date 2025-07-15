@@ -19,6 +19,47 @@ A Retrieval Augmented Generation (RAG) system that allows users to interact with
 - LLM generates answer → Based only on retrieved context
 -    Response sent → Answer + source documents shown to user
 
+## System Architecture 
+┌─────────────────────────────────────────────────────┐
+│                User Interface Layer                 │
+├─────────────────────────────────────────────────────┤
+│                Chainlit Web Interface               │
+└─────────────────────────────────────────────────────┘
+                         │
+┌─────────────────────────────────────────────────────┐
+│                 Application Layer                   │
+├─────────────────────────────────────────────────────┤
+│   Chatbot        │ Document Manager │ Config Mgmt   │
+│  (main.py)       │  (integrated)    │ (config.py)   │
+└─────────────────────────────────────────────────────┘
+                         │
+┌─────────────────────────────────────────────────────┐
+│                 Processing Layer                    │
+├─────────────────────────────────────────────────────┤
+│   Document Ingestor (ingest.py)            │
+│   ├─ Document Loading                               │
+│   ├─ Text Splitting                                 │
+│   ├─ Embedding                                      │
+│   ├─ Change Detection                               │
+│   ├─ Batch Processing                               │
+│   └─ Vector Store Integration                       │
+└─────────────────────────────────────────────────────┘
+                        │
+┌────────────────────────────────────────────────────────┐
+│                     Data Layer                         │
+├────────────────────────────────────────────────────────┤
+│    FAISS Vector Store    │ Document Files │  Metadata  │
+│    (Embeddings)          │ (PDF/TXT/DOCX) │  JSON      │
+│                          │                │ (Statuses) │
+└────────────────────────────────────────────────────────┘
+                        │
+┌─────────────────────────────────────────────────────┐
+│               Infrastructure Layer                  │
+├─────────────────────────────────────────────────────┤
+│  Ollama LLM Server  │ Local File System │ Logging   │
+└─────────────────────────────────────────────────────┘
+
+
 ## Tech Stack
 
 - PyPdf: PDF text extraction and manipulation
