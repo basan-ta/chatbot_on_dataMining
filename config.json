@@ -1,0 +1,21 @@
+{
+  "data_path": "data/",
+  "db_faiss_path": "vectorstores/db_faiss",
+  "chunk_size": 500,
+  "chunk_overlap": 100,
+  "max_chunks": null,
+  "retrieval_k": 3,
+  "similarity_threshold": 0.7,
+  "llm_model": "llama2",
+  "llm_temperature": 0.1,
+  "supported_extensions": [
+    ".pdf",
+    ".txt",
+    ".docx"
+  ],
+  "max_file_size_mb": 100,
+  "log_level": "INFO",
+  "log_file": "chatbot.log",
+  "chainlit_port": 8000,
+  "welcome_message": "Welcome to DataMining Assistant! \ud83e\udd16\ud83d\udcda"
+}
