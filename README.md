@@ -21,7 +21,7 @@ A Retrieval Augmented Generation (RAG) system that allows users to interact with
 
 ## Tech Stack
 
-- pypdf: PDF text extraction and manipulation
+- PyPdf: PDF text extraction and manipulation
 - langchain: Framework for LLM application development
 - faiss cpu: Vector similarity search and clustering
 - langchain community: Additional LangChain integrations
@@ -88,9 +88,9 @@ Chatbot_on_datamining/
 chainlit run app.py
 ```
 
-2. Open your browser and navigate to `http://localhost:3000`
+2. Open your browser and navigate to `http://localhost:3000` or you can configure any port as you want
 
-3. Upload PDF documents or place them in the `documents/` folder
+3. Upload PDF documents or place them in the `data/` folder
 
 4. Start asking questions about your documents!
 
@@ -121,7 +121,7 @@ LLM_MODEL = "gpt-3.5-turbo"
 
 ## How It Works
 
-1. Document Ingestion: PDFs are processed using pypdf to extract text
+1. Document Ingestion: PDFs are processed using PyPdf to extract text
 2. Text Splitting: Documents are chunked into manageable pieces
 3. Embeddings: Text chunks are converted to vector embeddings
 4. Vector Storage: Embeddings are stored in FAISS for fast retrieval
@@ -135,7 +135,7 @@ LLM_MODEL = "gpt-3.5-turbo"
 #### DocumentProcessor
 
 ```python
-from document_processor import DocumentProcessor
+DocumentProcessor
 
 processor = DocumentProcessor()
 documents = processor.load_pdfs("documents/")
@@ -212,6 +212,7 @@ For issues and questions:
 
 - [ ] Support for additional document formats (DOCX, TXT)
 - [ ] Multi-language support
+- [ ] Incremental Error handling 
 - [ ] Advanced filtering and search options
 - [ ] Document summarization features
 - [ ] Integration with cloud storage providers
@@ -219,4 +220,4 @@ For issues and questions:
 
 ---
 
-Built with ❤️ using LangChain, FAISS, and Chainlit
+Built with ❤️ using LangChain, Llama2, FAISS, and Chainlit.
