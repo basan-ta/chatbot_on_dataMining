@@ -68,15 +68,14 @@ echo "OPENAI_API_KEY=your_openai_api_key_here" > .env
 
 ```
 Chatbot_on_datamining/
-├── main.py                 # Main Chainlit application
-├── document_processor.py  # PDF processing and text extraction
+├── main.py               # Main Chainlit application
 ├── vector_store.py       # FAISS vector store management
-├── retriever.py          # Document retrieval logic
 ├── config.py             # Configuration settings
+├── ingest.py             #Processes documents into searchable vector representations with incremental update capabilities.
 ├── requirements.txt      # Python dependencies
-├── documents/            # Directory for PDF files
-├── vector_db/           # FAISS index storage
-└── README.md            # This file
+├── data/                 # Directory for PDF files
+├── vector_db/            # FAISS index storage
+└── README.md             # This file
 ```
 
 ## Usage
