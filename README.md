@@ -20,6 +20,7 @@ A Retrieval Augmented Generation (RAG) system that allows users to interact with
 -    Response sent → Answer + source documents shown to user
 
 ## System Architecture 
+![system_architecure](chatBot.png)
 
 
 ## Tech Stack
