@@ -22,42 +22,45 @@ A Retrieval Augmented Generation (RAG) system that allows users to interact with
 ## System Architecture 
 ┌─────────────────────────────────────────────────────┐
 │                User Interface Layer                 │
-├─────────────────────────────────────────────────────┤
-│                Chainlit Web Interface               │
-└─────────────────────────────────────────────────────┘
-                         │
+│  (Chainlit Web Interface - chat.chainlit.io)        │
+└────────────────────────────┬────────────────────────┘
+                             │
 ┌─────────────────────────────────────────────────────┐
 │                 Application Layer                   │
-├─────────────────────────────────────────────────────┤
-│   Chatbot        │ Document Manager │ Config Mgmt   │
-│  (main.py)       │  (integrated)    │ (config.py)   │
-└─────────────────────────────────────────────────────┘
-                         │
+│  ┌─────────────┐ ┌──────────────┐ ┌───────────────┐ │
+│  │   Chatbot   │ │ Doc Manager  │ │ Config Mgmt   │ │
+│  │ (main.py)   │ │ (integrated) │ │ (config.py)   │ │
+│  └─────────────┘ └──────────────┘ └───────────────┘ │
+└────────────────────────────┬────────────────────────┘
+                             │
 ┌─────────────────────────────────────────────────────┐
 │                 Processing Layer                    │
-├─────────────────────────────────────────────────────┤
-│   Document Ingestor (ingest.py)            │
-│   ├─ Document Loading                               │
-│   ├─ Text Splitting                                 │
-│   ├─ Embedding                                      │
-│   ├─ Change Detection                               │
-│   ├─ Batch Processing                               │
-│   └─ Vector Store Integration                       │
-└─────────────────────────────────────────────────────┘
-                        │
-┌────────────────────────────────────────────────────────┐
-│                     Data Layer                         │
-├────────────────────────────────────────────────────────┤
-│    FAISS Vector Store    │ Document Files │  Metadata  │
-│    (Embeddings)          │ (PDF/TXT/DOCX) │  JSON      │
-│                          │                │ (Statuses) │
-└────────────────────────────────────────────────────────┘
-                        │
+│  Enhanced Document Ingestor (ingest.py)             │
+│  ├─ Document Loading                                │
+│  ├─ Text Splitting                                  │
+│  ├─ Embedding                                       │
+│  ├─ Change Detection                                │
+│  ├─ Batch Processing                                │
+│  └─ Vector Store Integration                        │
+└────────────────────────────┬────────────────────────┘
+                             │
+┌─────────────────────────────────────────────────────┐
+│                     Data Layer                      │
+│  ┌───────────────────┐ ┌──────────────┐ ┌─────────┐ │
+│  │ FAISS Vector Store│ │ Document     │ │ Metadata│ │
+│  │  (Embeddings)     │ │ Files        │ │ (JSON)  │ │
+│  │                   │ │ (PDF/TXT/...)│ │         │ │
+│  └───────────────────┘ └──────────────┘ └─────────┘ │
+└────────────────────────────┬────────────────────────┘
+                             │
 ┌─────────────────────────────────────────────────────┐
 │               Infrastructure Layer                  │
-├─────────────────────────────────────────────────────┤
-│  Ollama LLM Server  │ Local File System │ Logging   │
+│  ┌───────────────┐ ┌───────────────┐ ┌────────────┐ │
+│  │ Ollama LLM    │ │ Local Storage │ │ Logging    │ │
+│  │  (Server)     │ │  (Filesystem) │ │  (logs)    │ │
+│  └───────────────┘ └───────────────┘ └────────────┘ │
 └─────────────────────────────────────────────────────┘
+
 
 
 ## Tech Stack
