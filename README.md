@@ -20,14 +20,6 @@ A Retrieval Augmented Generation (RAG) system that allows users to interact with
 -    Response sent → Answer + source documents shown to user
 
 ## System Architecture 
-- **Chatbot (main.py)**: Handles user queries and conversation flow.
-- **Document Manager**: Manages document uploads, storage, and retrieval.
-- **Config Mgmt (config.py)**: Centralizes configuration and environment settings.
-- **Document Ingestor (ingest.py)**: Processes documents (loading, splitting, embedding, etc.).
-- **FAISS Vector Store**: Efficient similarity search for embeddings.
-- **Metadata (JSON)**: Tracks document statuses and metadata.
-- **Ollama LLM Server**: Local large language model for generative tasks.
-- **Logging**: Centralized application logging.
 
 
 ## Tech Stack
